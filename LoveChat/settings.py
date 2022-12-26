@@ -145,3 +145,15 @@ MEDIA_URL = '/images/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'base.User'
+
+# AWS CONFIGURATIONS FOR LOVECHAT
+# *****************************************************************
+AWS_ACCESS_KEY_ID = 'AKIAWMGXCYIMYXQHDQG6'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'lovechat-bucket'
+AWS_QUERYSTRING_AUTH = False
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
