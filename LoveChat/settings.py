@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+import environ
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-aavjfyo--exx8o0s&_g36sze!&@pxy#5#$mbi(^or%0o-($&#k'
+SECRET_KEY = env('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['web-production-26f3.up.railway.app', 'localhost']
-CSRF_TRUSTED_ORIGINS=['https://web-production-26f3.up.railway.app', 'http://localhost']
+ALLOWED_HOSTS = ['web-production-26f3.up.railway.app', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS=['https://web-production-26f3.up.railway.app', 'http://127.0.0.1']
 
 
 # Application definition
@@ -87,7 +93,7 @@ DATABASES = {
     }
 }
 
-import dj_database_url
+
 
 DATABASES['default'] = dj_database_url.config(
     conn_max_age=600,
@@ -148,11 +154,11 @@ AUTH_USER_MODEL = 'base.User'
 
 # AWS CONFIGURATIONS FOR LOVECHAT
 # *****************************************************************
-AWS_ACCESS_KEY_ID = 'AKIAWMGXCYIMYXQHDQG6'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'lovechat-bucket'
-AWS_QUERYSTRING_AUTH = False
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 
+AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
