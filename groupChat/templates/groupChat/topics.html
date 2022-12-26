@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+{% block title %}
+Topics | LoveChat
+{% endblock title%}
+{% block content %}
+<section class="container text-white">
+    <h4 class=" text-center">Available Topics</h4>
+    <div class="topic-name-link">
+        <a href="{% url 'group-chat' %}">All</a>
+    </div>
+    {% for topic in topics %}
+    <div class="topic-name-link">
+        <a href="{% url 'group-chat' %}?q={{ topic.name }}">{{ topic.name }}</a>
+    </div>
+    {% endfor %}
+</section>
+{% endblock content %}

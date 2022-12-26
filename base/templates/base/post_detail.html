@@ -1,0 +1,76 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Post-Detail Page | Love Chat
+{% endblock title %}
+
+{% block content %}
+<section class="container mb-5 register-form" style="margin-top: 150px;">
+    <div class="mb-3 d-flex align-items-center justify-content-start">
+        <div>
+            <a href="/user-profile/{{ post_details.host.username }}"><img class="pic" src="{{ post_details.host.avatar.url}}"
+                    alt="">
+                <span>@{{post_details.host}}</span>
+            </a>
+        </div>
+        {% if request.user == post.host %}
+        <div>
+            <a href="edit-feed/{{ post.id }}"><i class="fa-solid fa-ellipsis"></i></a>
+            <a class="ms-3 delete" href="delete-feed/{{ post.id }}"><i class="fa-solid fa-trash"></i></a>
+        </div>
+        {% endif %}
+    </div>
+
+
+    <a href="#" class="post-img">
+        <img class="img-fluid mb-3" src="{{ post_details.post_img.url }}" alt="">
+    </a>
+    <br>
+    {% if post_details.no_of_likes == 0 %}
+    <span>No likes yet</span> <br>
+    {% elif post.no_of_likes == 1 %}
+    <span> Liked by {{ post_details.no_of_likes }} person</span> <br>
+    {% else %}
+    <span> Liked by {{ post_details.no_of_likes}} people</span> <br>
+    {% endif %}
+    <p>
+        <b>@{{post_details.host}}</b>
+        {{ post_details.caption }}
+    </p>
+    <p><b>Posted</b> {{ post_details.posted|timesince}} ago</p>
+    {% if request.user == post.host %}
+    <div class="room-action">
+        <a href="edit-feed/{{ post.id }}"><i class="fa-solid fa-ellipsis"></i></a>
+        <a class="ms-3 delete" href="delete-feed/{{ post.id }}"><i class="fa-solid fa-trash"></i></a>
+    </div>
+    {% endif %}
+
+
+    <div class="comment-box">
+        {% for comment in comments reversed %}
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
+            <div>
+                <img class="pic" src="{{ comment.user.avatar.url }}" alt="">
+                <span> <b> <a href="/user-profile/{{ comment.user.username }}">@{{comment.user.username}}</a></b> </span>
+            </div>
+            <div class="text-dark">
+                <span class="m"> {{comment.date|timesince}} ago </span> <br>
+            </div>
+        </div>
+        <div class="ms-5">
+            <p><b>{{comment.body}}</b></p>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="">
+            <input type="hidden" value="{{ post_details.id }}" name="post_id">
+            <input class="" type="text" name="comment" placeholder=" Add your comment ... ">
+        </div>
+    </form>
+</section>
+{% endblock %}

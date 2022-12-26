@@ -1,0 +1,89 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Search | LoveChat
+{% endblock title %}
+
+{% block content %}
+<section class="container" style="margin-top: 150px;">
+
+    <div class="mb-5">
+        <form action="{% url 'search' %}" method="GET" class="medium-search">
+            <input type="search" name="q" placeholder="Search ...">
+        </form>
+    </div>
+
+    <h4 class="text-center">Marching Your Query</h4>
+    <br>
+
+    <h4>Users</h4>
+    {% if users %}
+    <div class="room-messages">
+        {% for user in users %}
+        <div class="room-message">
+            <div class="mb-3 d-flex align-items-start justify-content-between">
+                <div class="d-flex align-items-start">
+                    <a href="{% url 'user-profile' user.username %}">
+                        <img class="pic" src="{{ user.avatar.url }}" alt="">
+                    </a>
+                    <p>
+                        <span>{{ user.name }}</span> <br>
+                        <span>@ {{ user.username }}</span>
+                    </p>
+                </div>
+                {% if request.user.username != user.username %}
+                <a class="mt-2" title="Send message" href="/message/inbox/{{ user.username }}"><i class="fa fa-message"></i></a>
+                {% endif %}
+            </div>
+
+            <hr>
+
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No matching query found</p>
+    {% endif %}
+
+    <h4>Groups</h4>
+    {% if rooms %}
+    <div class="room-messages">
+        {% for room in rooms %}
+        <div class="room-message">
+            <div class="mb-3 d-flex align-items-center justify-content-between">
+                <div>
+                    <a href="{% url 'user-profile' room.host.username %}">
+                        <img class="pic" src="{{ room.host.avatar.url }}" alt="">
+                        <span>@ {{ room.host.username }}</span>
+                    </a>
+                </div>
+
+                <small>{{ room.created|timesince }} ago</small>
+            </div>
+            <h3><a class="room-name" href="{% url 'room' room.id %}">{{ room.topic }}</a></h3>
+            <p>{{ room.description }}</p>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+                <p><i class="me-3 fa-solid fa-user-group"> </i> {{ room.participants.all.count}} joined</p>
+                <p class="topic-name">{{ room.name }}</p>
+            </div>
+            {% if request.user == room.host %}
+            <div class="room-actions">
+                <a href="{% url 'update-room' room.id %}">
+                    <i class="fa-solid fa-pen-to-square me-3"></i>
+                </a>
+                <a href="{% url 'delete-room' room.id %}">
+                    <i class="fa-solid fa-trash">
+                    </i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No matching query found</p>
+    {% endif %}
+
+    <!-- <h4>Posts</h4> -->
+    {% endblock content %}

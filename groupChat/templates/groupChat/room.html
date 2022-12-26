@@ -1,0 +1,100 @@
+{% extends 'main.html' %}
+
+{% block title %}
+{{ room.name }} Chat | LoveChat
+{% endblock title %}
+
+{% block content %}
+<div class="container room-wrapper">
+    <div class="room-chat-form">
+        <a href="{% url 'group-chat' %}">Go Back</a>
+        <hr>
+        <div class="text-white mb-3 d-flex flex-wrap justify-content-between align-items-center">
+            <h5>{{ room.name }}</h5>
+            <!-- {{ room.created|date:'d D, M, Y' }} || -->
+           <small>{{ room.created|timesince }} ago</small>
+        </div>
+        <hr>
+        <small>HOSTED BY</small> <br> <br>
+        <a href="{% url 'user-profile' room.host.username %}">
+            <img class="pic" src="{{ room.host.avatar.url }}" alt="Host avatar"><small> @{{ room.host.username}}</small>
+        </a>
+        <br> <br>
+        <p> {{ room.description }}</p>
+        <!-- <small class="topic-name">{{ room.topic.name }}</small> -->
+        <h3 class="mt-5">Conversations</h3>
+        <div class="position-relative">
+            <div class="chat-messages p-4">
+
+                {% for message in room_messages %}
+                {% if message.user == request.user %}
+                <div class="chat-message-right pb-2">
+                    <div>
+                        <a href="{% url 'user-profile' message.user.username %}"><img
+                                src="{{ message.user.avatar.url }}" class="pic"></a><small>
+                            {{message.user.name}}</small>
+                        <div class="text-muted small text-nowrap mt-2"
+                            style="font-size:10px; color: rgba(180, 180, 180, 0);">
+                            <p class="time">{{message.created}}
+                                <a href="{% url 'delete-message' message.id %}">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="message-body flex-shrink-1 rounded py-2 px-3 me-3 rounded">
+                        <!-- <div class="font-weight-bold mb-1">Sharon Lessman</div> -->
+                        <p>
+                            {{message.body|linebreaks}}
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="chat-message-left pb-2">
+                    <div>
+                        <a href="{% url 'user-profile' message.user.username %}"><img
+                                src="{{ message.user.avatar.url }}" class="pic"></a> 
+                                <small> {{ message.user.name}}</small>
+                        <div class="text-muted small text-nowrap mt-2"
+                            style="font-size:10px; color: rgba(180, 180, 180, 0);">
+                            <p class="time"">{{message.created}}
+                        </div>
+                    </div>
+                    <div class=" message-body flex-shrink-1 rounded py-2 px-3 ms-3 mb-3">
+                                <!-- <div class="font-weight-bold mb-1">Sharon Lessman</div> -->
+                            <p> {{message.body|linebreaks}} </p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="comment-form">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="body" placeholder="Write your message here ...">
+                    <!-- <textarea class="w-100 p-3" name="body" placeholder="Write your message here..."></textarea>
+            <input type="submit"> -->
+                </form>
+            </div>
+        </div>
+
+        <div class="participants-card">
+            <h3>Participants</h3>
+            <hr>
+            {% for user in participants %}
+            <div class="d-flex justify-content-start align-items-center">
+                <a href="{% url 'user-profile' user.username %}">
+                    <img class="pic" src="{{ user.avatar.url }}" alt="Pariticipant Avatar">
+                </a>
+                <div>
+                    <span>{{ user.name }}</span> <br>
+                    <span>@{{ user.username }}</span>
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+    </div>
+    {% endblock content %}

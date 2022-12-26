@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Love Chat | Registeration Page
+{% endblock title %}
+
+{% block content %}
+<section class="container" style="margin-top: 100px;">
+    <div class="text-center">
+        <h1>Create an account</h1>
+        <p>Become apart of the family by just signing up</p>
+    </div>
+
+    <form action="" method="POST" class="register-form">
+        {% csrf_token %}
+        <label for="">Name:</label>
+        {{ form.name }} <br> <br>
+        <label for="">Username:</label>
+        {{ form.username }} <br> <br>
+        <label for="">Email:</label>
+        {{ form.email }} <br> <br>
+        <label for="">Password:</label>
+        {{ form.password1 }} <br>
+        <small>Your password should be at least 8 characters long and contain atleast a letter and a number</small> <br> <br>
+        <label for="">Password Confirmation:</label>
+        {{ form.password2 }} <br> <br>
+        <div class="d-grid">
+            <button class="btn-1 my-3" type="submit">Create account</button>
+        </div>
+        <p class="text-center">Have an account?
+            <a href="{% url 'login' %}">Log in</a>
+        </p>
+    </form>
+</section>
+{% endblock content%}

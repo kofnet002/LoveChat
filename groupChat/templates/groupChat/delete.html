@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Delete {{ room.name }} Chat | LoveChat
+{% endblock title %}
+
+{% block content %}
+<div class="container" style="margin-top: 150px;">
+    <div class="mb-5">
+        <form action="{% url 'group-chat' %}" method="GET" class="medium-search">
+            <input type="search" name="q" placeholder="Search room...">
+        </form>
+    </div>
+    <h5 class="text-center text-danger">Delete "{{obj}}" ?</h5>
+    <form action="" method="POST" class="login-form">
+        {% csrf_token %}
+        <p class="mb-5"> Are you sure you want to delete "{{ obj }}" ?</p>
+        <button class="btn-1" type="submit">Confirm</button>
+        <a class="btn text-white" href="{{ request.META.HTTP_REFERER }}">Go Back</a>
+    </form>
+</div>
+{% endblock content %}

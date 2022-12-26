@@ -1,0 +1,107 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Group Chat | LoveChat
+{% endblock title %}
+
+{% block content %}
+<section class="container" style="margin-top: 180px;">
+    <div class="mb-5">
+        <form action="{% url 'group-chat' %}" method="GET" class="medium-search">
+            <input type="search" name="q" placeholder="Search room...">
+        </form>
+        <a class="btn-1 medium-search mt-5 text-white" href="{% url 'topics' %}">Browse Topics</a>
+    </div>
+
+    <div class="wrapper d-flex">
+
+        <div class="group-layout-1" style="flex:1; margin-top:25px ;">
+            <div style="position:fixed">
+                <h5>Browse Topics</h5>
+                <hr>
+                <div class="topic-name-link">
+                    <a href="{% url 'group-chat' %}">All</a>
+                </div>
+                {% for topic in topics %}
+                <div class="topic-name-link">
+                    <a href="{% url 'group-chat' %}?q={{ topic.name }}">{{ topic.name }}</a>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="group-layout-2" style="flex: 2;">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6>{{ room_count }} rooms available</h6>
+                <a class="btn-1 text-white" href="{% url 'create-room' %}"> + Create Room </a>
+            </div>
+            <hr>
+            <div class="room-messages">
+                {% for room in rooms %}
+                <div class="room-message">
+                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <a href="{% url 'user-profile' room.host.username %}">
+                                <img class="pic" src="{{ room.host.avatar.url }}" alt="">
+                                <span>@ {{ room.host.username }}</span>
+                            </a>
+                        </div>
+
+                        <small>{{ room.created|timesince }} ago</small>
+                    </div>
+                    <h3><a class="room-name" href="{% url 'room' room.id %}">{{ room.topic }}</a></h3>
+                    <p>{{ room.description }}</p>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p><i class="me-3 fa-solid fa-user-group"> </i> {{ room.participants.all.count}} joined</p>
+                        <p class="topic-name">{{ room.name }}</p>
+                    </div>
+                    {% if request.user == room.host %}
+                    <div class="room-actions">
+                        <a href="{% url 'update-room' room.id %}" title="Edit">
+                            <i class="fa fa-pen-to-square me-3"></i>
+                        </a>
+                        <a href="{% url 'delete-room' room.id %}" title="Delete">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="activity-card" style="flex:1; margin-left: 2rem;">
+            <div style="position: fixed;">
+                <h5>Recent Activity</h5>
+                <hr>
+                <div class="group-layout-3">
+                    {% for message in room_messages %}
+                    <div class="borders">
+                        <div class="d-flex align-items-start">
+                            <img class="rounded-circle mb-3" width="40" height="40" src="{{ message.user.avatar.url }}" alt="">
+                            <small class="mt-2 ms-3">@{{message.user.username}}</small>
+                        </div>
+
+                        <small>{{message.created|timesince}} ago</small> <br>
+
+                        <small class="text-muted">replied to post <span>"
+                            {{ message.room|truncatechars:10 }}"</span></small>
+
+                        <p class="replied-message">{{ message|truncatechars:20 }}</p>
+                        {% if request.user == message.user %}
+                        <a href="{% url 'delete-message' message.id %}">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock content %}

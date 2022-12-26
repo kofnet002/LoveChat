@@ -1,0 +1,282 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+Home Page | Love Chat
+{% endblock title %}
+
+{% block content %}
+
+<style>
+    .chat-online {
+        color: #34ce57
+    }
+
+    .chat-offline {
+        color: gray
+    }
+</style>
+
+<section class="container" style="margin-top: 150px;">
+    <div>
+        <form action="{% url 'search' %}" method="GET" class="medium-search">
+            <input type="search" name="q" placeholder="Search ...">
+        </form>
+    </div>
+
+    <!-- MOBILE VIEW BUTTONS START -->
+    <div class="text-center my-5 btns">
+        <a href="{% url 'group-chat' %}" class="btn-1 text-white">Available Groups</a>
+        <a href="{% url 'follow-page' %}" class="btn-1 text-white">Following</a>
+        <a href="{% url 'message' %}" class="btn-1 text-white">Messages</a>
+        <a href="{% url 'suggestion-page' %}" class="btn-1 text-white">Suggestions</a>
+    </div>
+    <!-- MOBILE VIEW BUTTONS END -->
+
+    <div class="layout">
+        <div class="layout_1" style="flex:1; margin-right:1rem;">
+            <div style="position: fixed;">
+                <div class="groups">
+                    <h5 class="mb-3">Available Groups</h5>
+                    {% for room in rooms %}
+                    <!-- <div class="mb-3 group-links">
+                        <a class="" href="{% url 'room' room.id %}">
+                            <span><b> {{ room.topic.name }} </b></span>
+                        </a>
+                    </div> -->
+
+                    <div class="mb-3 d-flex justify-content-between group-links">
+                        <div>
+                            <a href="{% url 'room' room.id %}">
+                                <img class="pic" src="{{ room.profileimg.url }}" alt="">
+                                <span><b>{{ room.topic.name }}</b></span>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <a class="text-center" href="{% url 'group-chat' %}">See all</a>
+                </div>
+
+                <div class="follow">
+                    <h5 class="mb-3">Following</h5>
+                    {% if follows %}
+                    {% for follow in follows reversed %}
+                    <div class="mb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{% url 'user-profile' follow.username %}">
+                                <img class="pic" src="{{ follow.avatar.url }}" alt="">
+                                <span><b>@{{follow.username}}</b></span>
+                            </a>
+                        </div>
+                        <a class="" href="/message/inbox/{{ follow.username }}"><i class="fa fa-message"></i></a>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="text-muted">
+                        <em>No following</em>
+                    </h4>
+                    {% endif %}
+                    <a class="text-right d-flex justify-content-end" href="{% url 'follow-page' %}">See all</a>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="layout_2" style="flex: 2;">
+            <!-- <div class="story-container">
+                <ul>
+                    <li>
+                        <div class="story">
+                            <img class="status_pic" src="{{ user.avatar.url }}" style="object-fit:cover;" alt="">
+                        </div>
+                        <span>Me</span>
+                    </li>
+                    <li>
+                        <div class="has-story">
+                            <img class="status_pic" src="/static/images/user_2.jpg" style="object-fit:cover;" alt="">
+                        </div>
+                        <span>Network</span>
+                    </li>
+                    <li>
+                        <div class="has-story">
+                            <img class="status_pic" src="/static/images/user_2.jpg" alt="">
+                        </div>
+                        <span>Eleanor</span>
+                    </li>
+                    <li>
+                        <div class="has-story">
+                            <img class="status_pic" src="/static/images/user_2.jpg" alt="">
+                        </div>
+                        <span>Eleanor</span>
+                    </li>
+                    <li>
+                        <div class="has-story">
+                            <img class="status_pic" src="/static/images/user_2.jpg" alt="">
+                        </div>
+                        <span>Eleanor</span>
+                    </li>
+                    <li>
+                        <div class="has-story">
+                            <img class="status_pic" src="/static/images/user_2.jpg" alt="">
+                        </div>
+                        <span>Eleanor</span>
+                    </li>
+                    <li>
+                        <div class="has-story">
+                            <img class="status_pic" src="/static/images/user_2.jpg" alt="">
+                        </div>
+                        <span>Eleanor</span>
+                    </li>
+                    <li>
+                        <div class="has-story">
+                            <img class="status_pic" src="/static/images/user_2.jpg" alt="">
+                        </div>
+                        <span>Eleanor</span>
+                    </li>
+                    <li>
+                        <div class="has-story">
+                            <img class="status_pic" src="/static/images/user_2.jpg" alt="">
+                        </div>
+                        <span>Eleanor</span>
+                    </li>
+                </ul>
+            </div> -->
+
+            {% if posts %}
+            <div class="">
+                {% for post in posts reversed %}
+                <div class="feed">
+                    <div class="p-3 mb-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <a href="/user-profile/{{ post.host.username }}"><img class="pic"
+                                    src="{{ post.host.avatar.url}}" alt="">
+                                <span>@{{post.host.username}}</span>
+                            </a>
+                        </div>
+                        {% if request.user == post.host %}
+                        <div>
+                            <a href="edit-feed/{{ post.id }}"><i class="fa-solid fa-ellipsis"></i></a>
+                            <a class="ms-3 delete" href="delete-feed/{{ post.id }}"><i
+                                    class="fa-solid fa-trash"></i></a>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <img class="w-100 img-fluid" src="{{ post.post_img.url }}" alt="">
+
+                    <div class="p-3 d-flex align-items center justify-content-between">
+                        <div>
+
+                            {% if like_filter %}
+                            <a href="{% url 'like-post' %}?post_id={{ post.id }}"> <i
+                                    class="fa-solid fa-thumbs-up"></i></a>
+                            {% else %}
+                            <a href="{% url 'like-post' %}?post_id={{ post.id }}"><i
+                                    class="fa-regular fa-thumbs-up"></i></a>
+                            {% endif %}
+                            
+                            <a href="/post-detail/{{ post.caption }}"><i class="mx-3 fa-regular fa-comment"></i></a>
+                        </div>
+                        <div>
+                            <a href="{{post.post_img.url}}" download><i class="fa-solid fa-download"></i></a>
+                            <a href="#"><i class="ms-3 fa-regular fa-bookmark"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="p-3">
+
+                        <span>
+                            <smal class="text-muted">@{{post.host.username}}</small>
+                                <span style="font-size: 16px; font-weight: bold;"> {{ post.caption }}</span>
+                        </span>
+
+                        {% if post.no_of_likes == 0 %}
+                        <span>No likes yet</span> <br>
+                        {% elif post.no_of_likes == 1 %}
+                        <p class="d-flex justify-content-between align-items-center">
+                            <span> Liked by {{ post.no_of_likes }} <b>person</b></span>
+                            <span>{{ post.posted|timesince }} ago</span>
+                        </p>
+                        {% else %}
+                        <p class="d-flex justify-content-between align-items-center">
+                            <span> Liked by {{ post.no_of_likes}} <b>people</b></span>
+                            <span>{{ post.posted|timesince }} ago</span>
+                        </p>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <h4 class="text-center text-muted"><em> Follow people to see posts</em></h4>
+            {% endif %}
+        </div>
+
+
+        <div class="layout_3" style="flex: 1; margin-left: 2rem;">
+            <div style="position: fixed;">
+                <div class="message-card rounded">
+                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                        <div class="p">
+                            <h5>Messages</h5>
+                        </div>
+                    </div>
+
+                    <div class="my-3 d-flex align-items-center justify-content-between">
+                        {% if chat_messages %}
+                        <div>
+                            {% for message in chat_messages %}
+                            <a href="{% url 'directs' message.user.username %}"
+                                class="list-group-item list-group-item-action border-0 {% if active_direct == message.user.username %}active{% endif %}">
+                                <div class="badge bg-success float-right"></div>
+                                <div class="d-flex align-items-center">
+
+                                    <img src="{{ message.user.avatar.url }}" class="pic me-3" alt="img" width="60"
+                                        height="60">
+
+                                    <div class="flex-grow-1 ml-6 text-white">
+                                        <b>{{message.user.name}}</b> <br>
+                                    </div>
+                                </div>
+                            </a>
+                            <br>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <h4 class="text-center text-muted"><em> No recent chats</em></h4>
+                        {% endif %}
+                    </div>
+                    <a class=" text-center" href="{% url 'message' %}">See all
+                    </a>
+                </div>
+
+                <div class="suggestion-card">
+                    <div class="rounded">
+                        <h5 class="mb-3">Suggested For You</h5>
+                        {% for user in suggest_users %}
+                        <div class="mb-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <img class="pic me-3" src="{{user.avatar.url}}" alt="" width="60" height="60">
+                                <span><b> {{user.name|truncatechars:10}}</b></span>
+                            </div>
+                            <div>
+                                <a class="ms-5" href="/user-profile/{{ user.username }}">view</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a class="text-center" href="{% url 'suggestion-page' %}">See all</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-icon">
+        <a href="{% url 'post-feed' %}">
+            <img class="img-fluid" src="{% static 'images/post.png' %}" alt="">
+        </a>
+    </div>
+</section>
+{% endblock content %}

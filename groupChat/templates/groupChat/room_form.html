@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Create Room | LoveChat
+{% endblock title %}
+
+{% block content %}
+<div class="container room-form-wrapper" style="margin-top: 150px;">
+    <h5 class="text-center">Create a Room</h5>
+    <form action="" method="POST" enctype="multipart/form-data" class="room-form">
+        {% csrf_token %}
+        <label for="topic_name">Topic Name:</label>
+        <input type="text" value="{{ room.topic.name }}" name="topic" list="topic-list" required
+            placeholder="Eg. Python, JS, Java..." />
+        <datalist id="topic-list">
+            <select name="" id="topic_name">
+                {% for topic in topics %}
+                <option value="{{topic.name}}">{{topic.name}}</option>
+                {% endfor %}
+            </select>
+        </datalist>
+        <br> <br>
+        <label for="">Room Name:</label>
+        {{ form.name }}
+        <br> <br>
+        <label for="">Room Description:</label><br>
+        {{ form.description }}
+        <br> <br>
+        <label for="">Room Profile Image:</label><br>
+        {{ form.profileimg }} <br><br>
+        <button class="btn-1" type="submit">Submit</button>
+        <a class="btn text-white" href="{% url 'group-chat' %}">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

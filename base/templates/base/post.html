@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Post Feed | Love Chat
+{% endblock title %}
+
+{% block content %}
+<section class="" style="margin-top: 200px;">
+    <h4 class="text-center">Make a post</h4>
+    <br>
+    <form action="" method="POST" enctype="multipart/form-data" class="login-form">
+        {% csrf_token %}
+        <!-- {{ form.as_p }} -->
+        <label for="">Post Image:</label>
+        {{ form.post_img }}
+        <br> <br>
+        <label for="">Caption:</label>
+        {{ form.caption }}
+        <br> <br>
+        <button class="btn-1" type="submit">Post</button>
+        <a class="btn text-white" href="{% url 'home' %}">Cancel</a>
+    </form>
+
+</section>
+{% endblock content %}

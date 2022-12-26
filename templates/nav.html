@@ -1,0 +1,79 @@
+<!-- {% load static %}
+{% if request.user.is_authenticated %}
+<nav>
+    <div class="container">
+        <div class="logo" style="flex:1">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="logo"><span>LOVE CHAT</span>
+            </a>
+        </div>
+
+        <div>
+            <form action="" method="GET">
+                {% csrf_token %}
+                <div style="width: 100%;"><input type="search" name="q" placeholder="Search for more ..."></div>
+            </form>
+        </div>
+
+        <div>
+            <img class="avatar" src="{{ request.user.avatar.url }}" alt="Your profile image">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</nav>
+{% endif %} -->
+
+
+{% load static %}
+{% if request.user.is_authenticated %}
+<nav class="navbar fixed-top navbar-expand-lg">
+    <div class="container my-3">
+        <a style="flex:1" class="logo navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'images/logo.png' %}" alt="">
+            <span> LOVE CHAT</span>
+        </a>
+        <button class="hamburger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span><img class="navbar-toggler-icon hamburger-icon" src="{% static 'images/hamburger.png' %}"
+                    alt=""></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page"
+                        href="{% url 'user-profile' request.user.username %}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+
+            <form class="d-flex" method="GET" action="{% url 'search' %}">
+                <input class="" name="q" type="search" placeholder="Search..." aria-label="Search">
+            </form>
+
+            <ul>
+                <li class="dropdown" style="list-style: none;">
+                    <div class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div>
+                            <img class="pic mt-3" src="{{ request.user.avatar.url }}" alt="Profile image">
+                        </div>
+                    </div>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'user-profile' request.user.username %}">Profile</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'message' %}">Messages</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <p class="user-name mt-3">{{ request.user.name }}</p>
+    </div>
+</nav>
+{% endif %}
