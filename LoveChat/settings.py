@@ -27,8 +27,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['web-production-26f3.up.railway.app', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS=['https://web-production-26f3.up.railway.app', 'http://127.0.0.1']
+ALLOWED_HOSTS = ['web-production-26f3.up.railway.app', 'localhost']
+CSRF_TRUSTED_ORIGINS=['https://web-production-26f3.up.railway.app', 'http://localhost']
 
 
 # Application definition
@@ -88,8 +88,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
 
 DATABASES['default'] = dj_database_url.config(
     conn_max_age=600,

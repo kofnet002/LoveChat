@@ -1,38 +1,47 @@
 {% extends 'main.html' %}
 
 {% block title %}
-Post Feed | Love Chat
+Edit Feed | Love Chat
 {% endblock title %}
 
 {% block content %}
-<form action="" method="POST" enctype="multipart/form-data" class="login-form" style="margin-top: 200px;">
-    {% csrf_token %}
-    <img class="w-100 post-img img-fluid" src="{{ post.post_img.url }}" alt="post">
-    {% if post.no_of_likes == 0 %}
-    <span>No likes yet</span> <br>
-    {% elif post.no_of_likes == 1 %}
-    <span> Liked by {{ post.no_of_likes }} <b>person</b></span> <br>
-    {% else %}
-    <span> Liked by {{ post.no_of_likes}} <b>people</b></span> <br>
-    {% endif %}
-    <span>
-        <b>@{{post.host}}</b>
-        <em style="font-size: 16px;"> {{ post.caption }}</em>
-    </span> <br>
-    <span>{{ post.posted|timesince }}</span>
-    {% if request.user == post.host %}
-    <div>
-        <a class="ms-3 delete room-actions" href="{% url 'delete-feed' post.id %}"><i class="fa-solid fa-trash"></i></a>
-    </div>
-    {% endif %}
-    <br><br>
-    <label for="">Post Image:</label>
-    {{ form.post_img }}
-    <br> <br>
-    <label for="">Caption:</label>
-    {{ form.caption }}
-    <br> <br>
-    <a href="{% url 'user-profile' post.host.username %}" class="btn text-white">Cancel</a>
-    <button class="btn-1" type="submit">Update</button>
-</form>
+<div style="margin-top: 200px;">
+    <h3 class="text-center mb-3">Feed</h3>
+    <form action="" method="POST" enctype="multipart/form-data" class="login-form">
+        {% csrf_token %}
+        <img class="mb-3 img-fluid" src="{{ post.post_img.url }}" alt="post">
+        {% if post.no_of_likes == 0 %}
+        <span>No likes yet</span> <br>
+        {% elif post.no_of_likes == 1 %}
+        <span> Liked by {{ post.no_of_likes }} <b>person</b></span> <br>
+        {% else %}
+        <span> Liked by {{ post.no_of_likes}} <b>people</b></span> <br>
+        {% endif %}
+        <span>
+            <b>@{{post.host}}</b>
+            <em style="font-size: 16px;"> {{ post.caption }}</em>
+        </span> <br>
+        <span>{{ post.posted|timesince }}</span>
+        <!-- <label for="">Post Image:</label>
+    {{ form.post_img }} -->
+        <br> <br>
+        <label for="">Caption:</label>
+        {{ form.caption }}
+        <br> <br>
+
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <button class="btn-1" type="submit">Update</button>
+                <a href="{% url 'user-profile' post.host.username %}" class="btn text-white">Cancel</a>
+            </div>
+            {% if request.user == post.host %}
+            <div>
+                <a title="Delete" class="ms-3 delete" href="{% url 'delete-feed' post.id %}"><i
+                        class="fa fa-trash"></i></a>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
 {% endblock content %}

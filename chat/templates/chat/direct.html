@@ -79,16 +79,15 @@ Chat | LoveChat
                 </div>
 
                 <div class="position-relative">
-                    <div class="chat-messages p-4">
-
+                    <div class="chat-messages p-3">
                         {% for direct in directs %}
                         {% if direct.sender == request.user %}
-                        <div class="chat-message-right pb-2">
-                            <div>
+                        <div class="chat-message-right mb-2">
+                            <div class="d-flex justify-content-end align-items-center flex-column">
                                 <a href="{% url 'user-profile' direct.user.username %}"><img
-                                        src="{{ direct.sender.avatar.url }}" class="rounded-circle" alt="img" width="40"
-                                        height="40"></a>
-                                <div class="text-muted small text-nowrap mt-2"
+                                        src="{{ direct.sender.avatar.url }}" class="rounded-circle" alt="img" width="30"
+                                        height="30"></a>
+                                <div class="text-muted small text-wrap"
                                     style="font-size:10px; color: rgba(180, 180, 180, 0);">
                                     <p class="time">{{direct.date}}
                                     </p>
@@ -96,17 +95,16 @@ Chat | LoveChat
 
                             </div>
                             <div class="flex-shrink-1 rounded py-2 px-3 me-3 message-body">
-                                <!-- <div class="font-weight-bold mb-1">Sharon Lessman</div> -->
                                 {{direct.body|linebreaks}}
                             </div>
                         </div>
                         {% else %}
                         <div class="chat-message-left pb-2">
-                            <div>
+                            <div class="d-flex justify-content-end align-items-center flex-column">
                                 <a href="{% url 'user-profile' direct.sender.username %}"><img
-                                        src="{{ direct.sender.avatar.url }}" class="rounded-circle" alt="img" width="40"
-                                        height="40"></a>
-                                <div class="text-muted small text-nowrap mt-2"
+                                        src="{{ direct.sender.avatar.url }}" class="rounded-circle" alt="img" width="30"
+                                        height="30"></a>
+                                <div class="text-muted small text-wrap"
                                     style="font-size:10px; color: rgba(180, 180, 180, 0);">
                                     <p class="time">{{direct.date}}
                                 </div>

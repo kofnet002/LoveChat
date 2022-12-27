@@ -1,15 +1,17 @@
 {% extends 'main.html' %} {% block title %} Profile Page | Love Chat
 {% endblock title %} {% block content %}
 
-<section style="margin-top: 170px;">
-    <a href="{{ user.cover_image.url }}" class="mb-5">
-        <img class="cover-img img-fluid" src="{{ user.cover_image.url }}" alt="">
-    </a>
+<section style="margin-top: 170px; width: 100%;">
+    <div class="container">
+        <a href="{{ user.cover_image.url }}" class="mb-5">
+            <img class="cover-img img-fluid" src="{{ user.cover_image.url }}" alt="">
+        </a>
+    </div>
 
     <div class="container mt-5 d-flex justify-content-center gap-3 flex-wrap mb-5">
-        <div class="{% if request.user.username == user.username %}personal-details {% endif %}">
+        <div class="{% if request.user.username == user.username %}personal-details{% endif %}">
             {% if request.user.username == user.username %}
-            <form class="mb-3" action="" method="POST" enctype="multipart/form-data">
+            <form class="mb-3 container" action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h4 class="mb-5">Personal Details</h4>
                 <div class="row mb-3">
@@ -122,7 +124,7 @@
         </div>
         {% endif %}
 
-    </div>
+    </div> 
 
     <div class="container-fluid mb-5">
         <h4 class="text-center mb-5">{{ user.name }}'s Posts</h4>

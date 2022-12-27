@@ -6,16 +6,18 @@ User Suggestion Page | Love Chat
 
 {% block content %}
 
-<h5 style="margin-top: 200px;" class="mb-5 m text-center">Suggested For You</h5>
-{% for user in suggest_users %}
-<div class="w-25 suggestion-page">
-    <div class="d-flex align-items-center justify-content-between">
-        <div>
-            <img class="rounded-circle me-3 pic" src="{{user.avatar.url}}" alt="">
-            <span><b> {{user.name|truncatechars:10}}</b></span>
-        </div>
-        <div>
-            <a class="ms-5" href="/user-profile/{{ user.username }}">view</a>
+<div class="" style="margin-top: 200px;">
+    <h5 class="mb-5 m text-center">Suggested For You</h5>
+    {% for user in suggest_users %}
+    <div class="suggestion-page">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <img class="rounded-circle me-3 pic" src="{{user.avatar.url}}" alt="">
+                <span><b> {{user.name|truncatechars:10}}</b></span>
+            </div>
+            <div>
+                <a class="ms" href="/user-profile/{{ user.username }}">view</a>
+            </div>
         </div>
     </div>
 </div>
