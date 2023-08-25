@@ -11,8 +11,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url
+# import dj_database_url
 from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,15 +28,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['web-production-26f3.up.railway.app', 'localhost']
-CSRF_TRUSTED_ORIGINS=['https://web-production-26f3.up.railway.app', 'http://localhost']
+# ALLOWED_HOSTS = ['web-production-26f3.up.railway.app', 'localhost']
+# CSRF_TRUSTED_ORIGINS=['https://web-production-26f3.up.railway.app', 'http://localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # 'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +47,8 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'chat.apps.ChatConfig',
     'groupChat.apps.GroupchatConfig',
-    'storages',
+    'cloudinary',
+    # 'storages',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +81,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'LoveChat.wsgi.application'
+# ASGI_APPLICATION = 'LoveChat.asgi.application'
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],
+#         },
+#     },
+# }
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -89,10 +103,10 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.config(
-    conn_max_age=600,
-    conn_health_checks=True,
-)
+# DATABASES['default'] = dj_database_url.config(
+#     conn_max_age=600,
+#     conn_health_checks=True,
+# )
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -148,12 +162,21 @@ AUTH_USER_MODEL = 'base.User'
 
 # AWS CONFIGURATIONS FOR LOVECHAT
 # *****************************************************************
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+# AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+# AWS_QUERYSTRING_AUTH = False
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+
+# CLOUDINARY CONFIGURATIONS
+# *****************************************************************
+cloudinary.config(
+    cloud_name = config('CLOUD_NAME'),
+    api_key = config('API_KEY'),
+    api_secret = config('API_SECRET')
+)

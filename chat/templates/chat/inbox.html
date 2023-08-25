@@ -1,7 +1,13 @@
 {% extends 'main.html' %}
+{% load static %}
 {% block title %}
 Chat | LoveChat
 {% endblock title %}
+
+{% block scripts %}
+<script src="{% static 'js/inbox.js' %}" defer></script>
+{% endblock scripts %}
+
 {% block content %}
 <div class="container" style="position: 10rem; margin-top: 200px;">
     <h1 class="h3 mb-3">Messages</h1>
@@ -27,7 +33,7 @@ Chat | LoveChat
                             height="40">
 
                         <div class="flex-grow-1 ml-6 text-white">
-                            <b>{{message.user.name}}</b>
+                            <b id="msg-receiver">{{message.user.name}}</b>
                             <div class="small"><span class="fas fa-circle chat-online"></span>
                                 @{{message.user.username}}</div>
                         </div>
@@ -39,13 +45,6 @@ Chat | LoveChat
             <div class="col-12 col-lg-7 col-xl-9">
                 <div class="py-2 px-4 border-bottom d-none d-lg-block">
                     <div class="d-flex align-items-center py-1">
-                        <!-- <div class="position-relative">
-								<img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
-							</div>
-							<div class="flex-grow-1 pl-3">
-								<strong>Sharon Lessman</strong>
-								<div class="text-muted small"><em>Typing...</em></div>
-							</div> -->
                         <div>
                             <button class="btn btn-primary btn-lg mr-1 px-3"><svg xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -81,6 +80,9 @@ Chat | LoveChat
                         {% if direct.sender == request.user %}
                         <div class="chat-message-right pb-2">
                             <div>
+
+                                <p id="user" hidden>{{ request.user }}</p>
+
                                 <a href="{% url 'user-profile' direct.user.username %}"><img
                                         src="{{ direct.sender.avatar.url }}" class="rounded-circle" alt="img" width="40"
                                         height="40"></a>
@@ -99,6 +101,8 @@ Chat | LoveChat
                         {% else %}
                         <div class="chat-message-left pb-2">
                             <div>
+                                <p id="recipient" hidden>{{ direct.sender }}</p>
+
                                 <a href="{% url 'user-profile' direct.sender.username %}"><img
                                         src="{{ direct.sender.avatar.url }}" class="rounded-circle" alt="img" width="40"
                                         height="40"></a>
@@ -122,14 +126,14 @@ Chat | LoveChat
 
 
                 <div class="flex-grow-0 py-3 px-4 border-top">
-                    <form method="POST" action="{% url 'send-directs' %}">
+                    <form>
                         {% csrf_token %}
                         <div class="input-group">
                             <input type="hidden" name="to_user" id="" value="{{active_direct}}">
                             <!-- <input name="body" type="text" class="form-control" placeholder="Type your message"> -->
-                            <textarea name="body" class="form-control text-white" placeholder="Type your message..."
-                                style="width: 90%;" required></textarea>
-                            <button class="btn-1" type="submit">Send</button>
+                            <textarea id="data-input" name="body" class="form-control text-white"
+                                placeholder="Type your message..." style="width: 90%;" required></textarea>
+                            <button id="submit-btn" class="btn-1" type="submit">Send</button>
                         </div>
                     </form>
 

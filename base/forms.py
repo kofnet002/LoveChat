@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from .models import User, Post
+from cloudinary.forms import CloudinaryFileField
 from django import forms
 
 
@@ -15,6 +16,8 @@ class MyUserCreationForm(UserCreationForm):
             'password1': forms.PasswordInput(attrs={'placeholder': '********'}),
             'password2': forms.PasswordInput(attrs={'placeholder': '********'}),
         }
+        image = CloudinaryFileField(label="avatar",options={'folder' : 'Profiles/'}, required=False)
+        image = CloudinaryFileField(label="cover_image",options={'folder' : 'Profiles/',}, required=False)
 
 
 class UpdateUserForm(forms.ModelForm):
@@ -28,3 +31,4 @@ class PostFeedForm(ModelForm):
         model = Post
         fields = '__all__'
         exclude = ['host', 'no_of_likes']
+        image = CloudinaryFileField(options={'folder' : 'Posts/'})
