@@ -28,10 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = ['web-production-26f3.up.railway.app', 'localhost']
-# CSRF_TRUSTED_ORIGINS=['https://web-production-26f3.up.railway.app', 'http://localhost']
+ALLOWED_HOSTS = ['lovechat-166a2743393f.herokuapp.com/', 'localhost']
+CSRF_TRUSTED_ORIGINS=['https://lovechat-166a2743393f.herokuapp.com/', 'http://localhost']
 
 
 # Application definition
@@ -53,13 +53,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'LoveChat.urls'
