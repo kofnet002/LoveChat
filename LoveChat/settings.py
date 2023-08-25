@@ -30,8 +30,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['lovechat-166a2743393f.herokuapp.com/', 'localhost']
-# CSRF_TRUSTED_ORIGINS=['https://lovechat-166a2743393f.herokuapp.com/', 'http://localhost']
+ALLOWED_HOSTS = ['lovechat-166a2743393f.herokuapp.com', 'localhost']
+CSRF_TRUSTED_ORIGINS=['https://lovechat-166a2743393f.herokuapp.com', 'http://localhost']
 
 
 # Application definition

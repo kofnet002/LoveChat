@@ -1,1 +1,1 @@
-web: gunicorn LoveChat.wsgi -log-file -
+web: gunicorn LoveChat.wsgi
