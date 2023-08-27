@@ -5,6 +5,26 @@ Login | Love Chat
 {% endblock title %}
 
 {% block content %}
+
+<!-- Display error messages to user -->
+{% for field in login_form %}
+<p>
+    {% for error in field.errors %}
+<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+    {{ error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+</p>
+{% endfor %}
+
+{% if login_form.non_field_errors %}
+<div class="text-danger">
+    <p>{{login_form.non_field_errors}}</p>
+</div>
+{% endif %}
+<!-- End error messages display -->
+
 <section class="" style="margin-top: 150px;">
     <div class="text-center mb-5">
         <h1><em>Welcome to</em> LoveChat</h1>
@@ -12,10 +32,12 @@ Login | Love Chat
     </div>
     <form action="" method="POST" class="container login-form">
         {% csrf_token %}
-        <label for="">Username:</label>
-        <input class="mb-3" type="text" name="username" placeholder="frimpong">
-        <label for="">Password:</label>
-        <input type="password" name="password" placeholder="*******">
+        <div>
+            <input class="p-3  mb-3" type="text" name="username" id="inputUsername" class="" placeholder="Username" required
+                autofocus>
+            <input class="p-3  mb-3" type="password" name="password" id="inputPassword2" class=""
+                placeholder="Enter password" required>
+        </div>
         <div class="d-grid">
             <button class="my-3 btn-1" type="submit">Log in</button>
         </div>

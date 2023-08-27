@@ -5,31 +5,56 @@ Love Chat | Registeration Page
 {% endblock title %}
 
 {% block content %}
+
+<!-- Display error messages to user -->
+{% for field in registration_form %}
+<p>
+    {% for error in field.errors %}
+<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+    {{ error }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+</p>
+{% endfor %}
+
+{% if registration_form.non_field_errors %}
+<div class="text-danger">
+    <p>{{registration_form.non_field_errors}}</p>
+</div>
+{% endif %}
+<!-- End error messages display -->
+
 <section class="container mb-5" style="margin-top: 100px;">
     <div class="text-center">
         <h1>Create an account</h1>
         <p>Become apart of the family by just signing up</p>
     </div>
 
-    <form action="" method="POST" class="register-form">
-        {% csrf_token %}
-        <label for="">Name:</label>
-        {{ form.name }} <br> <br>
-        <label for="">Username:</label>
-        {{ form.username }} <br> <br>
-        <label for="">Email:</label>
-        {{ form.email }} <br> <br>
-        <label for="">Password:</label>
-        {{ form.password1 }} <br>
-        <small>Your password should be at least 8 characters long and contain atleast a letter and a number</small> <br> <br>
-        <label for="">Password Confirmation:</label>
-        {{ form.password2 }} <br> <br>
-        <div class="d-grid">
-            <button class="btn-1 my-3" type="submit">Create account</button>
-        </div>
-        <p class="text-center">Have an account?
-            <a href="{% url 'login' %}">Log in</a>
-        </p>
-    </form>
+    <div class="register-form">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="flex flex-col">
+                <input type="text" name="name" id="inputName" class="p-3 outline-none mb-3" placeholder="Username"
+                    required autofocus>
+                <input type="text" name="username" id="inputUsername" class="p-3 outline-none mb-3"
+                    placeholder="Username" required>
+                <input type="email" name="email" id="inputEmail" class="p-3 outline-none mb-3"
+                    placeholder="Email address" required>
+                <input type="password" name="password1" id="inputPassword1" class="p-3 outline-none mb-3"
+                    placeholder="Password" required>
+                <input type="password" name="password2" id="inputPassword2" class="p-3 outline-none mb-3"
+                    placeholder="Confirm password" required>
+            </div>
+
+            <div class="d-grid my-3">
+                <button class="btn-1 p-3" type="submit">Register</button>
+            </div>
+
+            <div class="text-sm text-center">
+                <p>Already having an account ? <a class="text-blue-600" href="{% url 'login' %}">Login</a></p>
+            </div>
+        </form>
+    </div>
 </section>
 {% endblock content%}

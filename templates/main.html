@@ -20,15 +20,6 @@
 <body>
     {% include 'nav.html' %}
 
-    {% if messages %}
-    <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
-        {% for message in messages %}
-        {{message}}
-        {% endfor %}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endif %}
-
     {% block content%}
     {% endblock content %}
 

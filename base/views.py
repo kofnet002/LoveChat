@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from .models import LikePost, User, Post, Follow, Comment
-from .forms import MyUserCreationForm, UpdateUserForm, PostFeedForm
+from .forms import MyUserCreationForm,UserAuthenticationForm, UpdateUserForm, PostFeedForm
 from django.contrib import messages
 from chat.models import ChatMessage
 from groupChat.models import Room
@@ -9,47 +9,56 @@ from django.contrib.auth.decorators import login_required
 from itertools import chain
 import random
 from django.db.models import Q
+from django.http import HttpResponse
 
 
 def registerPage(request):
     form = MyUserCreationForm()
+    if request.user.is_authenticated:
+        return HttpResponse(f"You are already authenticated as {request.user.email}")
+    
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
+
+             # clean user intput & login user
+            username = form.cleaned_data.get('username').lower()
+            raw_password = form.cleaned_data.get('password1')
+            account = authenticate(username=username, password=raw_password)
+            login(request, account)
+
             messages.info(request, "Accounted Created Successfully")
             return redirect('home')
         else:
             messages.info(request, "Something went wrong")
+
     context = {
-        'form': form
+        'registration_form': form
     }
     return render(request, 'base/register.html', context)
 
 
 def loginPage(request):
+    form = UserAuthenticationForm()
+
     if request.user.is_authenticated:
         return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        form = UserAuthenticationForm(request.POST)
 
-        try:
-            user = User.objects.get(username=username)
-        except:
-            pass
-            # messages.error(request, "User does not exists!")
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
 
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            messages.info(request, f"Welcome {request.user.name}")
-            return redirect('home')
-        else:
-            messages.error(request, "Invalid Credentials")
-    context = {}
+            if user:
+                login(request, user)
+                return redirect('home')
+    context = {
+    'login_form': form
+    }  
     return render(request, 'base/login.html', context)
 
 

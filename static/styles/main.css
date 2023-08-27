@@ -141,6 +141,7 @@ input[type='password'] {
     background-color: #1f1d2c;
     line-height: 30px;
     width: 100%;
+    border-radius: 10px;
 }
 
 input[type='text']:focus,
